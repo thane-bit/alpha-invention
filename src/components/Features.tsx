@@ -229,9 +229,8 @@ function CardShell({
         className="h-10 w-10 rounded-lg object-cover sm:h-12 sm:w-12"
       />
 
-      <h3 className="mt-6 flex items-baseline gap-2 text-lg font-bold sm:text-xl">
+      <h3 className="mt-6 text-lg font-bold sm:text-xl">
         <span style={{ color: '#E1E0CC' }}>{card.title}</span>
-        <span className="text-gray-500 text-xs">{card.number}</span>
       </h3>
 
       <ul className="mt-5 flex flex-1 flex-col gap-3">
@@ -389,8 +388,7 @@ export default function Features() {
                 <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
                   <div>
                     <p className="text-primary text-[10px] uppercase tracking-[0.3em]">
-                      {activeCard.title.replace('.', '')} · Step{' '}
-                      {activeCard.number}
+                      {activeCard.title.replace('.', '')}
                     </p>
                     <h4
                       className="mt-1 text-base font-bold sm:text-lg"
