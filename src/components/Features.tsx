@@ -400,6 +400,7 @@ export default function Features() {
               {
                 text: 'Where did this system come from?',
                 className: '',
+                breakBefore: true,
               },
             ]}
           />
