@@ -370,8 +370,7 @@ export default function Protocol() {
             you have an invention worth months of research and prototyping. The
             Scoping Protocol can move in any direction, branching from any
             approach. The Alpha Method forces you to start broad and move through
-            a fixed number of steps. Begin with Alpha, develop your own style,
-            become a Scoping Protocol Expert.
+            a fixed number of steps. Let's begin with Alpha.
           </p>
         </div>
 
