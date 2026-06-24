@@ -1,6 +1,7 @@
 import Hero from './components/Hero'
 import About from './components/About'
 import Features from './components/Features'
+import Protocol from './components/Protocol'
 
 export default function App() {
   return (
@@ -8,6 +9,7 @@ export default function App() {
       <Hero />
       <About />
       <Features />
+      <Protocol />
     </main>
   )
 }

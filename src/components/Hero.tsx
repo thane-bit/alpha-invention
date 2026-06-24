@@ -1,20 +1,25 @@
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import WordsPullUp from './WordsPullUp'
-import { DOC_URL, GEMINI_URL, GEMINI_SHARE_URL, PROTOCOL_URL } from '../links'
+import { GEMINI_URL, GEMINI_SHARE_URL, PROTOCOL_URL } from '../links'
 
-// The seven-step Alpha Method sequence, numbered as in the source doc, plus
-// the worked-example conversation and the published protocol article.
-const NAV_ITEMS: { n?: string; label: string; href: string }[] = [
-  { n: '01', label: 'Choose Outcome', href: DOC_URL },
-  { n: '02', label: 'Set Requirements', href: DOC_URL },
-  { n: '03', label: 'Scope 200 Lines', href: DOC_URL },
-  { n: '04', label: 'Rank Approaches', href: DOC_URL },
-  { n: '05', label: 'Go Wide, Go Deep', href: DOC_URL },
-  { n: '06', label: 'Convert to Spec', href: DOC_URL },
-  { n: '07', label: 'Find Collaborators', href: DOC_URL },
-  { label: 'Worked Example', href: GEMINI_SHARE_URL },
-  { label: 'Scoping Protocol', href: PROTOCOL_URL },
+// The seven-step Alpha Method sequence — numbered tabs scroll to the in-page
+// Protocol section. Worked Example and Scoping Protocol are external resources.
+const NAV_ITEMS: {
+  n?: string
+  label: string
+  href: string
+  external?: boolean
+}[] = [
+  { n: '01', label: 'Choose Outcome', href: '#step-1' },
+  { n: '02', label: 'Set Requirements', href: '#step-2' },
+  { n: '03', label: 'Scope 200 Lines', href: '#step-3' },
+  { n: '04', label: 'Rank Approaches', href: '#step-4' },
+  { n: '05', label: 'Go Wide, Go Deep', href: '#step-5' },
+  { n: '06', label: 'Convert to Spec', href: '#step-6' },
+  { n: '07', label: 'Find Collaborators', href: '#step-7' },
+  { label: 'Worked Example', href: GEMINI_SHARE_URL, external: true },
+  { label: 'Scoping Protocol', href: PROTOCOL_URL, external: true },
 ]
 
 const EASE = [0.16, 1, 0.3, 1] as const
@@ -44,8 +49,8 @@ export default function Hero() {
               <li key={item.label}>
                 <a
                   href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={item.external ? '_blank' : undefined}
+                  rel={item.external ? 'noopener noreferrer' : undefined}
                   className="flex items-baseline gap-1 whitespace-nowrap text-[10px] transition-colors duration-200 sm:text-xs md:text-sm"
                   style={{ color: 'rgba(225, 224, 204, 0.8)' }}
                   onMouseEnter={(e) =>

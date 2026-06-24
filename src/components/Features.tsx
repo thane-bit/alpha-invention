@@ -1,8 +1,7 @@
 import { useRef, useState } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { ArrowRight, Check, Copy, ChevronDown, X } from 'lucide-react'
+import { Check, Copy, ChevronDown, X } from 'lucide-react'
 import WordsPullUpMultiStyle from './WordsPullUpMultiStyle'
-import { DOC_URL } from '../links'
 import requirementsPrompt from '../prompts/requirements.md?raw'
 import scoperPrompt from '../prompts/scoper.md?raw'
 import triagePrompt from '../prompts/triage.md?raw'
@@ -284,16 +283,6 @@ export default function Features() {
                 <pre className="mt-4 max-h-[55vh] overflow-auto whitespace-pre rounded-xl bg-black/60 p-4 font-mono text-[11px] leading-relaxed text-gray-300 sm:text-xs">
                   {activeCard.prompt}
                 </pre>
-
-                <a
-                  href={DOC_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary/70 hover:text-primary mt-4 inline-flex items-center gap-1.5 text-xs transition-colors"
-                >
-                  Open the full template in Google Docs
-                  <ArrowRight className="h-3.5 w-3.5 -rotate-45" />
-                </a>
               </div>
             </motion.div>
           )}
