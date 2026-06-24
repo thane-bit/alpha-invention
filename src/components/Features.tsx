@@ -455,9 +455,17 @@ export default function Features() {
                       style={{ color: '#E1E0CC' }}
                     >
                       {activeCard.kind === 'ontology'
-                        ? 'The six terms, by completeness and possibility'
+                        ? 'The language of invention'
                         : activeCard.panelHeading}
                     </h4>
+                    {activeCard.kind === 'ontology' && (
+                      <p className="mt-2 max-w-2xl text-xs leading-relaxed text-gray-400 sm:text-sm">
+                        Use these six terms as Lego bricks to build technologies
+                        as arguments — laying out the case for and against each
+                        one, and surfacing where it's weak and where it's
+                        promising.
+                      </p>
+                    )}
                   </div>
 
                   <button
