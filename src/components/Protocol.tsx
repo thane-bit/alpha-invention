@@ -21,6 +21,7 @@ interface Step {
   id: string
   title: string
   tagline: string
+  narrative?: string
   body?: string
   bullets?: string[]
   actions?: Action[]
@@ -34,6 +35,8 @@ const STEPS: Step[] = [
     id: 'step-1',
     title: 'Choose Outcome',
     tagline: "What does the world look like once it's solved?",
+    narrative:
+      'Everything starts from the world you want to exist — not the technology you want to build. Describe that end-state vividly; Alpha reasons backwards from it, so the sharper the outcome, the stronger everything downstream.',
     body: 'Solve the global challenge you care about and the world looks like…',
   },
   {
@@ -41,6 +44,8 @@ const STEPS: Step[] = [
     id: 'step-2',
     title: 'Set Requirements',
     tagline: 'What needs to be true to find solutions in this space?',
+    narrative:
+      "Before hunting for solutions, you map the rules of the game: the hard constraints any answer must satisfy — physics, economics, regulation, biology. These become the filter that keeps the search honest and rules out approaches that can't work.",
     promptTitle: 'System Prompt: Requirements',
     prompt: requirementsPrompt,
   },
@@ -50,6 +55,8 @@ const STEPS: Step[] = [
     title: 'Scope 200 Lines',
     tagline:
       "What's possible under these requirements, and the logic behind each approach?",
+    narrative:
+      'Now Alpha generates breadth. It maps a wide field of possible approaches as an argument tree — each solution paired with the constraints that could break it — so you see not just what might work, but the reasoning and bottlenecks behind every path.',
     promptTitle: 'System Prompt: SCOPER 2.2.a',
     prompt: scoperPrompt,
   },
@@ -59,6 +66,8 @@ const STEPS: Step[] = [
     title: 'Rank Approaches',
     tagline:
       'Compared by Upside, Neglect and Traction — which approaches lead?',
+    narrative:
+      'With many approaches on the table, you score each on three axes: Upside (how big if it works), Neglect (how overlooked it is), and Traction (how provable in the near term). The ranking surfaces the few paths worth deeper investment.',
     promptTitle: 'System Prompt: Venture-Science Triage Evaluator',
     prompt: triagePrompt,
   },
@@ -68,6 +77,8 @@ const STEPS: Step[] = [
     title: 'Go Wide, Go Deep',
     tagline:
       "Don't settle for quick answers. Find the best approach of many to learn by comparison.",
+    narrative:
+      'One pass is never enough. Widen the search until at least 30 approaches are ranked — the order shifts every pass — then deepen the leading five with further scoping. Breadth first, then depth, so the winner is chosen by comparison rather than by your first hunch.',
     actions: [
       {
         label:
@@ -92,6 +103,8 @@ const STEPS: Step[] = [
     id: 'step-6',
     title: 'Convert to Spec',
     tagline: 'How does this become real?',
+    narrative:
+      'Here a promising approach becomes a buildable plan. You re-rank the finalists, test whether any should be combined, then define what must be true for the approach to become working technology — and what a first prototype has to prove to win investment.',
     actions: [
       {
         label: 'Re-rank the leading approaches, then test whether any should be combined.',
@@ -122,6 +135,8 @@ const STEPS: Step[] = [
     id: 'step-7',
     title: 'Find Collaborators',
     tagline: 'Who do you need to build with?',
+    narrative:
+      'An invention only matters if it gets built. You turn the spec into a six-month experimental plan, find the labs already working at the frontier, and reach out to run the killer experiments together — the start of a real venture.',
     actions: [
       {
         label: 'Build an experimental plan for each 6-month prototype milestone.',
@@ -245,6 +260,12 @@ function StepRow({
             className="overflow-hidden"
           >
             <div className="space-y-4 px-5 pb-6 sm:px-7">
+              {step.narrative && (
+                <p className="border-l-2 border-primary/40 pl-4 text-sm italic leading-relaxed text-gray-400 sm:text-base">
+                  {step.narrative}
+                </p>
+              )}
+
               {step.body && (
                 <p className="text-sm text-gray-300 sm:text-base">{step.body}</p>
               )}
