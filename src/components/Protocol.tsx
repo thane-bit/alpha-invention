@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { Check, Copy, ChevronDown } from 'lucide-react'
 import WordsPullUpMultiStyle from './WordsPullUpMultiStyle'
 import requirementsPrompt from '../prompts/requirements.md?raw'
 import scoperPrompt from '../prompts/scoper.md?raw'
 import triagePrompt from '../prompts/triage.md?raw'
+import { PROTOCOL_URL } from '../links'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -21,7 +22,7 @@ interface Step {
   id: string
   title: string
   tagline: string
-  narrative?: string
+  narrative?: ReactNode
   body?: string
   bullets?: string[]
   actions?: Action[]
@@ -55,8 +56,23 @@ const STEPS: Step[] = [
     title: 'Scope 200 Lines',
     tagline:
       "What's possible under these requirements, and the logic behind each approach?",
-    narrative:
-      'Now Alpha generates breadth. It maps a wide field of possible approaches as an argument tree — each solution paired with the constraints that could break it — so you see not just what might work, but the reasoning and bottlenecks behind every path.',
+    narrative: (
+      <>
+        Now Alpha generates breadth. It maps a wide field of possible approaches
+        as an{' '}
+        <a
+          href={PROTOCOL_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary underline underline-offset-2 hover:opacity-80"
+        >
+          Outcomes Graph
+        </a>{' '}
+        — an argument tree with each constraint paired with the solutions that
+        overcome it — so you see not just what might work, but the reasoning and
+        bottlenecks behind every path.
+      </>
+    ),
     promptTitle: 'System Prompt: SCOPER 2.2.a',
     prompt: scoperPrompt,
   },

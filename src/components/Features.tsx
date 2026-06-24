@@ -2,9 +2,20 @@ import { useRef, useState } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { ArrowUpRight, ChevronDown, X } from 'lucide-react'
 import WordsPullUpMultiStyle from './WordsPullUpMultiStyle'
-import { GEMINI_SHARE_URL, PROTOCOL_URL } from '../links'
+import {
+  GEMINI_SHARE_URL,
+  CELL_CRYPTO_URL,
+  PROTOCOL_URL,
+  PRIMER_VIDEO_URL,
+} from '../links'
 
 const CARD_EASE = [0.22, 1, 0.36, 1] as const
+
+interface OptionLink {
+  label: string
+  description: string
+  href: string
+}
 
 interface BaseCard {
   id: string
@@ -14,32 +25,46 @@ interface BaseCard {
   items: string[]
 }
 
-interface LinkCard extends BaseCard {
-  kind: 'link'
-  href: string
+interface OptionsCard extends BaseCard {
+  kind: 'options'
   cta: string
+  panelHeading: string
+  options: OptionLink[]
 }
 
 interface OntologyCard extends BaseCard {
   kind: 'ontology'
 }
 
-type InfoCard = LinkCard | OntologyCard
+type InfoCard = OptionsCard | OntologyCard
 
 const INFO_CARDS: InfoCard[] = [
   {
-    kind: 'link',
+    kind: 'options',
     id: 'worked-example',
     number: '01',
-    title: 'Example',
+    title: 'Examples',
     icon: 'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260405_171918_4a5edc79-d78f-4637-ac8b-53c43c220606.png&w=1280&q=85',
     items: [
       'See how the prompts come together',
-      'A real Gemini conversation, start to finish',
-      'Requirements, Scoper and Triage run end-to-end',
+      'Worked runs from outcome to ranked approaches',
+      'Single-player and think-tank scale',
     ],
-    href: GEMINI_SHARE_URL,
-    cta: 'Open the example',
+    cta: 'View examples',
+    panelHeading: 'Two worked examples',
+    options: [
+      {
+        label: 'Net Zero Transport',
+        description: 'Single-player Alpha run, 30 minutes.',
+        href: GEMINI_SHARE_URL,
+      },
+      {
+        label: 'Cell Crypto',
+        description:
+          'A think tank tackling what cybersecurity looks like when cells compute.',
+        href: CELL_CRYPTO_URL,
+      },
+    ],
   },
   {
     kind: 'ontology',
@@ -54,7 +79,7 @@ const INFO_CARDS: InfoCard[] = [
     ],
   },
   {
-    kind: 'link',
+    kind: 'options',
     id: 'scoping-protocol',
     number: '03',
     title: 'Providence',
@@ -64,8 +89,20 @@ const INFO_CARDS: InfoCard[] = [
       'The Outcomes Graph protocol for applied-science coordination',
       'How structural scoping builds deep tech companies',
     ],
-    href: PROTOCOL_URL,
-    cta: 'Read the protocol',
+    cta: 'Where it came from',
+    panelHeading: 'Where this system came from',
+    options: [
+      {
+        label: 'Read the protocol',
+        description: 'The Outcomes Graph write-up on applied-science coordination.',
+        href: PROTOCOL_URL,
+      },
+      {
+        label: 'Watch the protocol',
+        description: 'A short Scoping Protocol primer video.',
+        href: PRIMER_VIDEO_URL,
+      },
+    ],
   },
 ]
 
@@ -249,31 +286,25 @@ function CardShell({
   )
 }
 
-function LinkFeatureCard({ card }: { card: LinkCard }) {
-  return (
-    <CardShell card={card} isOpen={false}>
-      <a
-        href={card.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-primary group mt-6 flex items-center gap-1.5 text-xs font-medium sm:text-sm"
-      >
-        {card.cta}
-        <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-      </a>
-    </CardShell>
-  )
-}
-
-function OntologyFeatureCard({
+// Every info card is a toggle that expands the shared panel below the grid.
+function ToggleFeatureCard({
   card,
   isOpen,
   onToggle,
 }: {
-  card: OntologyCard
+  card: InfoCard
   isOpen: boolean
   onToggle: () => void
 }) {
+  const label =
+    card.kind === 'ontology'
+      ? isOpen
+        ? 'Hide ontology'
+        : 'View ontology'
+      : isOpen
+        ? 'Hide'
+        : card.cta
+
   return (
     <CardShell card={card} isOpen={isOpen}>
       <button
@@ -281,7 +312,7 @@ function OntologyFeatureCard({
         aria-expanded={isOpen}
         className="text-primary group mt-6 flex items-center gap-1.5 text-xs font-medium sm:text-sm"
       >
-        {isOpen ? 'Hide ontology' : 'View ontology'}
+        {label}
         <ChevronDown
           className={`h-3.5 w-3.5 transition-transform duration-300 ${
             isOpen ? 'rotate-180' : ''
@@ -292,15 +323,42 @@ function OntologyFeatureCard({
   )
 }
 
+function OptionsList({ options }: { options: OptionLink[] }) {
+  return (
+    <div className="flex flex-col gap-3">
+      {options.map((option) => (
+        <a
+          key={option.href}
+          href={option.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group flex items-start justify-between gap-4 rounded-xl border border-white/10 bg-black/40 p-4 transition-colors hover:border-primary/40"
+        >
+          <div className="flex flex-col gap-1">
+            <span
+              className="text-sm font-bold sm:text-base"
+              style={{ color: '#E1E0CC' }}
+            >
+              {option.label}
+            </span>
+            <span className="text-gray-400 text-xs sm:text-sm">
+              {option.description}
+            </span>
+          </div>
+          <ArrowUpRight className="text-primary mt-0.5 h-4 w-4 flex-shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </a>
+      ))}
+    </div>
+  )
+}
+
 export default function Features() {
   const gridRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(gridRef, { once: true, margin: '-100px' })
 
   const [openId, setOpenId] = useState<string | null>(null)
 
-  const activeCard = INFO_CARDS.find(
-    (c) => c.id === openId && c.kind === 'ontology',
-  ) as OntologyCard | undefined
+  const activeCard = INFO_CARDS.find((c) => c.id === openId)
 
   const toggle = (id: string) => {
     setOpenId((current) => (current === id ? null : id))
@@ -310,17 +368,14 @@ export default function Features() {
     { node: <VideoCard key="video" />, key: 'video' },
     ...INFO_CARDS.map((card) => ({
       key: card.id,
-      node:
-        card.kind === 'link' ? (
-          <LinkFeatureCard key={card.id} card={card} />
-        ) : (
-          <OntologyFeatureCard
-            key={card.id}
-            card={card}
-            isOpen={openId === card.id}
-            onToggle={() => toggle(card.id)}
-          />
-        ),
+      node: (
+        <ToggleFeatureCard
+          key={card.id}
+          card={card}
+          isOpen={openId === card.id}
+          onToggle={() => toggle(card.id)}
+        />
+      ),
     })),
   ]
 
@@ -376,11 +431,11 @@ export default function Features() {
           ))}
         </div>
 
-        {/* Inline expandable ontology panel */}
+        {/* Inline expandable panel — ontology table or a list of links */}
         <AnimatePresence initial={false}>
           {activeCard && (
             <motion.div
-              key="ontology-panel"
+              key="info-panel"
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
@@ -392,26 +447,32 @@ export default function Features() {
                 <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
                   <div>
                     <p className="text-primary text-[10px] uppercase tracking-[0.3em]">
-                      {activeCard.title.replace('.', '')}
+                      {activeCard.title}
                     </p>
                     <h4
                       className="mt-1 text-base font-bold sm:text-lg"
                       style={{ color: '#E1E0CC' }}
                     >
-                      The six terms, by completeness and possibility
+                      {activeCard.kind === 'ontology'
+                        ? 'The six terms, by completeness and possibility'
+                        : activeCard.panelHeading}
                     </h4>
                   </div>
 
                   <button
                     onClick={() => setOpenId(null)}
-                    aria-label="Close ontology"
+                    aria-label="Close panel"
                     className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-gray-400 transition-colors hover:text-primary"
                   >
                     <X className="h-4 w-4" />
                   </button>
                 </div>
 
-                <OntologyTable />
+                {activeCard.kind === 'ontology' ? (
+                  <OntologyTable />
+                ) : (
+                  <OptionsList options={activeCard.options} />
+                )}
               </div>
             </motion.div>
           )}
