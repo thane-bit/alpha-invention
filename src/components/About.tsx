@@ -4,7 +4,7 @@ import WordsPullUpMultiStyle from './WordsPullUpMultiStyle'
 import AnimatedLetter from './AnimatedLetter'
 
 const BODY_TEXT =
-  'Across hundreds of scoping runs, Alpha pairs adversarial agents that argue every claim — Con, HCon, Sol, HSol — building a 200-line blueprint of intervention pathways. Together they map the structural bottlenecks, rank approaches on upside, neglect and traction, and convert raw insight into a fundable product specification.'
+  'Across hundreds of scoping runs, Alpha pairs adversarial agents that argue every claim, building a comprehensive blueprint of intervention pathways. Together they map the structural bottlenecks, rank approaches on upside, neglect and traction, and convert raw insight into a fundable product specification.'
 
 export default function About() {
   const paragraphRef = useRef<HTMLParagraphElement>(null)
@@ -27,13 +27,13 @@ export default function About() {
         <WordsPullUpMultiStyle
           className="mx-auto w-full max-w-3xl text-3xl leading-[0.95] sm:text-4xl sm:leading-[0.9] md:text-5xl lg:text-6xl xl:text-7xl"
           segments={[
-            { text: 'This is the Alpha Method,', className: 'font-normal' },
+            { text: 'Inventions change our world.', className: 'font-normal' },
             {
-              text: 'a system for invention.',
+              text: 'Determine the outcome you want to see in the world,',
               className: 'italic font-serif',
             },
             {
-              text: 'It maps constraints, ranks approaches, and converts structural insight into product specification.',
+              text: 'build and rank hundreds of inventions that could get us there and build the optimal one.',
               className: 'font-normal',
             },
           ]}
