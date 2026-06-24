@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import WordsPullUp from './WordsPullUp'
-import { DOC_URL } from '../links'
+import { DOC_URL, GEMINI_URL } from '../links'
 
 const NAV_ITEMS = ['Outcome', 'Requirements', 'Scope', 'Triage', 'Collaborators']
 
@@ -79,7 +79,7 @@ export default function Hero() {
               </motion.p>
 
               <motion.a
-                href={DOC_URL}
+                href={GEMINI_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 initial={{ y: 20, opacity: 0 }}
