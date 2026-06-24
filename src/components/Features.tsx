@@ -7,6 +7,7 @@ import {
   CELL_CRYPTO_URL,
   PROTOCOL_URL,
   PRIMER_VIDEO_URL,
+  SELF_HEALING_PAPER_URL,
 } from '../links'
 
 const CARD_EASE = [0.22, 1, 0.36, 1] as const
@@ -216,6 +217,165 @@ function OntologyTable() {
             that validates our statement.
           </p>
         </div>
+      </div>
+    </div>
+  )
+}
+
+// Token colours mirror the ontology table / graph convention.
+const TOKEN = {
+  outcome: '#E1E0CC',
+  hcon: '#E8590C',
+  con: '#E03131',
+  hsol: '#2F9E44',
+  tag: '#DEDBC8',
+}
+
+interface ChainRow {
+  level: number
+  token: string
+  color: string
+  text: string
+  href?: string
+}
+
+interface Chain {
+  heading: string
+  caption: string
+  rows: ChainRow[]
+}
+
+// Two worked chains from a Net Zero Transport graph, in plain language.
+const EXAMPLE_CHAINS: Chain[] = [
+  {
+    heading: 'From outcome to requirements',
+    caption:
+      "An outcome isn't a solution — it breaks down into what any solution has to deliver.",
+    rows: [
+      {
+        level: 0,
+        token: '[[Outcome]]',
+        color: TOKEN.outcome,
+        text: 'A world where transport produces zero emissions',
+      },
+      {
+        level: 1,
+        token: '[[HCon]]',
+        color: TOKEN.hcon,
+        text: "This might not work unless clean options can actually do the job",
+      },
+      {
+        level: 2,
+        token: '[[Con]]',
+        color: TOKEN.con,
+        text: "Fossil transport won't be replaced if alternatives can't match payload, range and speed",
+      },
+      {
+        level: 3,
+        token: '#Req',
+        color: TOKEN.tag,
+        text: "Store as much energy per kilo and per litre as today's fuels",
+      },
+      {
+        level: 3,
+        token: '#Req',
+        color: TOKEN.tag,
+        text: 'Refuel or recharge as fast as filling a tank',
+      },
+      {
+        level: 3,
+        token: '#Req',
+        color: TOKEN.tag,
+        text: 'Keep working everywhere — from freezing skies to desert roads',
+      },
+    ],
+  },
+  {
+    heading: 'Stress-testing a solution with an FPQ',
+    caption:
+      'A proposed solution invites a doubt; a first-principles question turns it into a sharper, evidenced answer.',
+    rows: [
+      {
+        level: 0,
+        token: '[[HSol]]',
+        color: TOKEN.hsol,
+        text: 'Move freight through vacuum tubes on magnetic levitation',
+      },
+      {
+        level: 1,
+        token: '[[HCon]]',
+        color: TOKEN.hcon,
+        text: 'The tubes might rupture and lose pressure catastrophically',
+      },
+      {
+        level: 2,
+        token: 'FPQ',
+        color: TOKEN.tag,
+        text: 'How could sealed sections survive an earthquake without failing?',
+      },
+      {
+        level: 3,
+        token: '[[HSol]]',
+        color: TOKEN.hsol,
+        text: 'Self-healing polymer joints with fast-closing blast gates',
+      },
+      {
+        level: 4,
+        token: '#EVD',
+        color: TOKEN.tag,
+        text: 'White 2001',
+        href: SELF_HEALING_PAPER_URL,
+      },
+    ],
+  },
+]
+
+function ChainBlock({ chain }: { chain: Chain }) {
+  return (
+    <div className="rounded-xl border border-white/10 bg-black/40 p-4 sm:p-5">
+      <p className="text-sm font-bold sm:text-base" style={{ color: '#E1E0CC' }}>
+        {chain.heading}
+      </p>
+      <p className="mt-1 text-gray-400 text-xs sm:text-sm">{chain.caption}</p>
+      <div className="mt-4 flex flex-col gap-2 font-mono text-[11px] sm:text-xs">
+        {chain.rows.map((row, i) => (
+          <div
+            key={i}
+            className="flex items-baseline gap-2"
+            style={{ paddingLeft: `${row.level * 1.1}rem` }}
+          >
+            <span className="flex-shrink-0 font-bold" style={{ color: row.color }}>
+              {row.token}
+            </span>
+            {row.href ? (
+              <a
+                href={row.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 underline underline-offset-2 hover:text-primary"
+              >
+                {row.text}
+              </a>
+            ) : (
+              <span className="text-gray-300">{row.text}</span>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function ExampleChains() {
+  return (
+    <div className="mt-6 border-t border-white/10 pt-6">
+      <p className="text-primary mb-4 text-[10px] uppercase tracking-[0.3em]">
+        Example chains
+      </p>
+      <div className="grid gap-3 md:grid-cols-2">
+        {EXAMPLE_CHAINS.map((chain) => (
+          <ChainBlock key={chain.heading} chain={chain} />
+        ))}
       </div>
     </div>
   )
@@ -478,7 +638,10 @@ export default function Features() {
                 </div>
 
                 {activeCard.kind === 'ontology' ? (
-                  <OntologyTable />
+                  <>
+                    <OntologyTable />
+                    <ExampleChains />
+                  </>
                 ) : (
                   <OptionsList options={activeCard.options} />
                 )}

@@ -17,3 +17,10 @@ export const PROTOCOL_URL =
 
 /** YouTube: the Scoping Protocol primer video. */
 export const PRIMER_VIDEO_URL = 'https://www.youtube.com/watch?v=u5DQo2xKGSY'
+
+/**
+ * Real evidence for the self-healing-polymer example chain:
+ * White, S. R. et al. "Autonomic healing of polymer composites."
+ * Nature 409, 794–797 (2001).
+ */
+export const SELF_HEALING_PAPER_URL = 'https://www.nature.com/articles/35057232'
