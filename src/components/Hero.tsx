@@ -1,7 +1,24 @@
 import { motion } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
 import WordsPullUp from './WordsPullUp'
-import { GEMINI_URL, GEMINI_SHARE_URL, PROTOCOL_URL } from '../links'
+import { GeminiIcon, ClaudeIcon, OpenAIIcon } from './BrandIcons'
+import {
+  GEMINI_URL,
+  CLAUDE_URL,
+  OPENAI_URL,
+  GEMINI_SHARE_URL,
+  PROTOCOL_URL,
+} from '../links'
+
+// Chat assistants surfaced as icon links inside the "Start scoping" pill.
+const SCOPING_TOOLS: {
+  name: string
+  href: string
+  Icon: (props: { className?: string }) => JSX.Element
+}[] = [
+  { name: 'Gemini', href: GEMINI_URL, Icon: GeminiIcon },
+  { name: 'Claude', href: CLAUDE_URL, Icon: ClaudeIcon },
+  { name: 'ChatGPT', href: OPENAI_URL, Icon: OpenAIIcon },
+]
 
 // "Invent" scrolls to the in-page Protocol section (the full 7-step sequence).
 // Worked Example and Scoping Protocol are external resources.
@@ -88,26 +105,35 @@ export default function Hero() {
                 className="text-primary/70 text-xs sm:text-sm md:text-base"
                 style={{ lineHeight: 1.2 }}
               >
-                Alpha is a venture-science method for systematic invention — a
-                worldwide protocol that decomposes the hardest global challenges
-                into recursive solution–constraint chains, surfacing the
-                structural bottlenecks and master regulators others miss.
+                An agentic workflow to dismantle the hardest global challenges.
+                Build logical chains to surface structural bottlenecks and
+                master regulators.
               </motion.p>
 
-              <motion.a
-                href={GEMINI_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+              <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.7, ease: EASE }}
-                className="group flex w-fit items-center gap-2 rounded-full bg-primary py-1.5 pl-5 pr-1.5 text-sm font-medium text-black transition-all duration-300 hover:gap-3 sm:text-base"
+                className="flex w-fit items-center gap-2 rounded-full bg-primary py-1.5 pl-5 pr-1.5 text-sm font-medium text-black sm:text-base"
               >
                 Start scoping
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black transition-transform duration-300 group-hover:scale-110 sm:h-10 sm:w-10">
-                  <ArrowRight className="h-4 w-4" style={{ color: '#E1E0CC' }} />
-                </span>
-              </motion.a>
+                <div className="flex items-center gap-1.5">
+                  {SCOPING_TOOLS.map(({ name, href, Icon }) => (
+                    <a
+                      key={name}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Open ${name}`}
+                      title={name}
+                      className="flex h-9 w-9 items-center justify-center rounded-full bg-black transition-transform duration-200 hover:scale-110 sm:h-10 sm:w-10"
+                      style={{ color: '#E1E0CC' }}
+                    >
+                      <Icon className="h-[18px] w-[18px]" />
+                    </a>
+                  ))}
+                </div>
+              </motion.div>
             </div>
           </div>
         </div>

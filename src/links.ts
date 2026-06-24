@@ -1,5 +1,7 @@
-/** Google Gemini — where the user runs the copied scoping prompts. */
+/** Chat assistants where the user runs the copied scoping prompts. */
 export const GEMINI_URL = 'https://gemini.google.com/app'
+export const CLAUDE_URL = 'https://claude.ai/new'
+export const OPENAI_URL = 'https://chatgpt.com/'
 
 /** The worked-example Gemini conversation linked from the doc. */
 export const GEMINI_SHARE_URL =
