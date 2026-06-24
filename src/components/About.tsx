@@ -13,7 +13,11 @@ export default function About() {
     offset: ['start 0.8', 'end 0.2'],
   })
 
-  const chars = BODY_TEXT.split('')
+  const totalChars = BODY_TEXT.length
+  // Split into words so each word stays on one line; track a running character
+  // index so the scroll-linked reveal still animates letter-by-letter.
+  const words = BODY_TEXT.split(' ')
+  let charIndex = 0
 
   return (
     <section className="bg-black px-4 py-24 sm:px-6 md:py-32">
@@ -45,15 +49,42 @@ export default function About() {
           className="mx-auto mt-12 w-full max-w-3xl break-words text-xs sm:text-sm md:text-base md:mt-16"
           style={{ color: '#DEDBC8', lineHeight: 1.7 }}
         >
-          {chars.map((char, i) => (
-            <AnimatedLetter
-              key={i}
-              char={char}
-              index={i}
-              totalChars={chars.length}
-              progress={scrollYProgress}
-            />
-          ))}
+          {words.map((word, wi) => {
+            const letters = (
+              <span key={wi} className="inline-block whitespace-nowrap">
+                {word.split('').map((char) => {
+                  const i = charIndex++
+                  return (
+                    <AnimatedLetter
+                      key={i}
+                      char={char}
+                      index={i}
+                      totalChars={totalChars}
+                      progress={scrollYProgress}
+                    />
+                  )
+                })}
+              </span>
+            )
+            // Render the space that separated this word from the next as its
+            // own animated character so the reveal timing stays continuous.
+            const space =
+              wi < words.length - 1 ? (
+                <AnimatedLetter
+                  key={`s${wi}`}
+                  char=" "
+                  index={charIndex++}
+                  totalChars={totalChars}
+                  progress={scrollYProgress}
+                />
+              ) : null
+            return (
+              <span key={`w${wi}`}>
+                {letters}
+                {space}
+              </span>
+            )
+          })}
         </p>
       </div>
     </section>
