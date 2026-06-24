@@ -20,7 +20,7 @@ export default function About() {
   let charIndex = 0
 
   return (
-    <section className="bg-black px-4 py-24 sm:px-6 md:py-32">
+    <section id="about" className="scroll-mt-20 bg-black px-4 py-24 sm:px-6 md:py-32">
       <div className="mx-auto flex max-w-6xl flex-col items-center rounded-2xl bg-[#101010] px-6 py-20 text-center sm:px-12 md:rounded-[2rem] md:py-28">
         {/* Small label */}
         <span className="text-primary mb-8 text-[10px] uppercase tracking-[0.3em] sm:text-xs">

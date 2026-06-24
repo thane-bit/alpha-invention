@@ -1,13 +1,7 @@
 import { motion } from 'framer-motion'
 import WordsPullUp from './WordsPullUp'
 import { GeminiIcon, ClaudeIcon, OpenAIIcon } from './BrandIcons'
-import {
-  GEMINI_URL,
-  CLAUDE_URL,
-  OPENAI_URL,
-  GEMINI_SHARE_URL,
-  PROTOCOL_URL,
-} from '../links'
+import { GEMINI_URL, CLAUDE_URL, OPENAI_URL } from '../links'
 
 // Chat assistants surfaced as icon links inside the "Start scoping" pill.
 const SCOPING_TOOLS: {
@@ -20,17 +14,15 @@ const SCOPING_TOOLS: {
   { name: 'ChatGPT', href: OPENAI_URL, Icon: OpenAIIcon },
 ]
 
-// "Invent" scrolls to the in-page Protocol section (the full 7-step sequence).
-// Worked Example and Scoping Protocol are external resources.
+// "About" scrolls to the first content section; "Invent" to the 7-step protocol.
 const NAV_ITEMS: {
   n?: string
   label: string
   href: string
   external?: boolean
 }[] = [
+  { label: 'About', href: '#about' },
   { label: 'Invent', href: '#protocol' },
-  { label: 'Worked Example', href: GEMINI_SHARE_URL, external: true },
-  { label: 'Scoping Protocol', href: PROTOCOL_URL, external: true },
 ]
 
 const EASE = [0.16, 1, 0.3, 1] as const
