@@ -291,9 +291,9 @@ const EXAMPLE_CHAINS: Chain[] = [
     ],
   },
   {
-    heading: 'Stress-testing a solution with an FPQ',
+    heading: 'Getting around an HCon with an FPQ',
     caption:
-      'A proposed solution invites a doubt; a first-principles question turns it into a sharper, evidenced answer.',
+      'An HCon (hypothesised constraint) is a possible reason an idea might fail. A first-principles question digs into it to find a way around — answered by a new, evidenced solution.',
     rows: [
       {
         level: 0,
@@ -311,7 +311,7 @@ const EXAMPLE_CHAINS: Chain[] = [
         level: 2,
         token: 'FPQ',
         color: TOKEN.tag,
-        text: 'How could sealed sections survive an earthquake without failing?',
+        text: 'Why should one small breach take down the whole tube, instead of staying contained to one section?',
       },
       {
         level: 3,
