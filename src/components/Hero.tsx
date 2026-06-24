@@ -1,14 +1,19 @@
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import WordsPullUp from './WordsPullUp'
-import { DOC_URL, GEMINI_URL, PROTOCOL_URL } from '../links'
+import { DOC_URL, GEMINI_URL, GEMINI_SHARE_URL, PROTOCOL_URL } from '../links'
 
-const NAV_ITEMS: { label: string; href: string }[] = [
-  { label: 'Outcome', href: DOC_URL },
-  { label: 'Requirements', href: DOC_URL },
-  { label: 'Scope', href: DOC_URL },
-  { label: 'Triage', href: DOC_URL },
-  { label: 'Collaborators', href: DOC_URL },
+// The seven-step Alpha Method sequence, numbered as in the source doc, plus
+// the worked-example conversation and the published protocol article.
+const NAV_ITEMS: { n?: string; label: string; href: string }[] = [
+  { n: '01', label: 'Choose Outcome', href: DOC_URL },
+  { n: '02', label: 'Set Requirements', href: DOC_URL },
+  { n: '03', label: 'Scope 200 Lines', href: DOC_URL },
+  { n: '04', label: 'Rank Approaches', href: DOC_URL },
+  { n: '05', label: 'Go Wide, Go Deep', href: DOC_URL },
+  { n: '06', label: 'Convert to Spec', href: DOC_URL },
+  { n: '07', label: 'Find Collaborators', href: DOC_URL },
+  { label: 'Worked Example', href: GEMINI_SHARE_URL },
   { label: 'Scoping Protocol', href: PROTOCOL_URL },
 ]
 
@@ -32,16 +37,16 @@ export default function Hero() {
         <div className="noise-overlay pointer-events-none absolute inset-0 opacity-[0.7] mix-blend-overlay" />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60" />
 
-        {/* Navbar — black pill hanging from the top edge */}
-        <nav className="absolute left-1/2 top-0 z-20 -translate-x-1/2">
-          <ul className="flex items-center gap-3 rounded-b-2xl bg-black px-4 py-2 sm:gap-6 md:gap-12 md:rounded-b-3xl md:px-8 lg:gap-14">
+        {/* Navbar — black pill hanging from the top edge (scrolls on overflow) */}
+        <nav className="absolute left-1/2 top-0 z-20 max-w-[94vw] -translate-x-1/2">
+          <ul className="no-scrollbar flex items-center gap-3 overflow-x-auto rounded-b-2xl bg-black px-4 py-2 sm:gap-5 md:gap-7 md:rounded-b-3xl md:px-8">
             {NAV_ITEMS.map((item) => (
               <li key={item.label}>
                 <a
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="whitespace-nowrap text-[10px] transition-colors duration-200 sm:text-xs md:text-sm"
+                  className="flex items-baseline gap-1 whitespace-nowrap text-[10px] transition-colors duration-200 sm:text-xs md:text-sm"
                   style={{ color: 'rgba(225, 224, 204, 0.8)' }}
                   onMouseEnter={(e) =>
                     (e.currentTarget.style.color = '#E1E0CC')
@@ -50,6 +55,11 @@ export default function Hero() {
                     (e.currentTarget.style.color = 'rgba(225, 224, 204, 0.8)')
                   }
                 >
+                  {item.n && (
+                    <span className="text-primary text-[0.7em] font-bold tabular-nums">
+                      {item.n}
+                    </span>
+                  )}
                   {item.label}
                 </a>
               </li>
