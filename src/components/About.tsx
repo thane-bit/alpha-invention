@@ -20,7 +20,7 @@ export default function About() {
       <div className="mx-auto flex max-w-6xl flex-col items-center rounded-2xl bg-[#101010] px-6 py-20 text-center sm:px-12 md:rounded-[2rem] md:py-28">
         {/* Small label */}
         <span className="text-primary mb-8 text-[10px] uppercase tracking-[0.3em] sm:text-xs">
-          Adversarial scoping
+          Set an Outcome, Copy these Prompts
         </span>
 
         {/* Multi-style heading */}
@@ -33,7 +33,7 @@ export default function About() {
               className: 'italic font-serif',
             },
             {
-              text: 'build and rank hundreds of inventions that could get us there and build the optimal one.',
+              text: 'explore and rank hundreds of inventions that could get us there and build the optimal one.',
               className: 'font-normal',
             },
           ]}
