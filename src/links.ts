@@ -8,3 +8,7 @@ export const DOC_URL =
 
 /** Google Gemini — where the user runs the copied scoping prompts. */
 export const GEMINI_URL = 'https://gemini.google.com/app'
+
+/** DSV article: the Outcomes Graph scoping protocol writeup. */
+export const PROTOCOL_URL =
+  'https://www.deepscienceventures.com/articles/outcomes-graph-a-protocol-for-applied-science-coordination'

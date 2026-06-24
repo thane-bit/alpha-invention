@@ -1,9 +1,16 @@
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import WordsPullUp from './WordsPullUp'
-import { DOC_URL, GEMINI_URL } from '../links'
+import { DOC_URL, GEMINI_URL, PROTOCOL_URL } from '../links'
 
-const NAV_ITEMS = ['Outcome', 'Requirements', 'Scope', 'Triage', 'Collaborators']
+const NAV_ITEMS: { label: string; href: string }[] = [
+  { label: 'Outcome', href: DOC_URL },
+  { label: 'Requirements', href: DOC_URL },
+  { label: 'Scope', href: DOC_URL },
+  { label: 'Triage', href: DOC_URL },
+  { label: 'Collaborators', href: DOC_URL },
+  { label: 'Scoping Protocol', href: PROTOCOL_URL },
+]
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
@@ -29,12 +36,12 @@ export default function Hero() {
         <nav className="absolute left-1/2 top-0 z-20 -translate-x-1/2">
           <ul className="flex items-center gap-3 rounded-b-2xl bg-black px-4 py-2 sm:gap-6 md:gap-12 md:rounded-b-3xl md:px-8 lg:gap-14">
             {NAV_ITEMS.map((item) => (
-              <li key={item}>
+              <li key={item.label}>
                 <a
-                  href={DOC_URL}
+                  href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[10px] transition-colors duration-200 sm:text-xs md:text-sm"
+                  className="whitespace-nowrap text-[10px] transition-colors duration-200 sm:text-xs md:text-sm"
                   style={{ color: 'rgba(225, 224, 204, 0.8)' }}
                   onMouseEnter={(e) =>
                     (e.currentTarget.style.color = '#E1E0CC')
@@ -43,7 +50,7 @@ export default function Hero() {
                     (e.currentTarget.style.color = 'rgba(225, 224, 204, 0.8)')
                   }
                 >
-                  {item}
+                  {item.label}
                 </a>
               </li>
             ))}
