@@ -3,21 +3,15 @@ import { ArrowRight } from 'lucide-react'
 import WordsPullUp from './WordsPullUp'
 import { GEMINI_URL, GEMINI_SHARE_URL, PROTOCOL_URL } from '../links'
 
-// The seven-step Alpha Method sequence — numbered tabs scroll to the in-page
-// Protocol section. Worked Example and Scoping Protocol are external resources.
+// "Invent" scrolls to the in-page Protocol section (the full 7-step sequence).
+// Worked Example and Scoping Protocol are external resources.
 const NAV_ITEMS: {
   n?: string
   label: string
   href: string
   external?: boolean
 }[] = [
-  { n: '01', label: 'Choose Outcome', href: '#step-1' },
-  { n: '02', label: 'Set Requirements', href: '#step-2' },
-  { n: '03', label: 'Scope 200 Lines', href: '#step-3' },
-  { n: '04', label: 'Rank Approaches', href: '#step-4' },
-  { n: '05', label: 'Go Wide, Go Deep', href: '#step-5' },
-  { n: '06', label: 'Convert to Spec', href: '#step-6' },
-  { n: '07', label: 'Find Collaborators', href: '#step-7' },
+  { label: 'Invent', href: '#protocol' },
   { label: 'Worked Example', href: GEMINI_SHARE_URL, external: true },
   { label: 'Scoping Protocol', href: PROTOCOL_URL, external: true },
 ]
@@ -44,7 +38,7 @@ export default function Hero() {
 
         {/* Navbar — black pill hanging from the top edge (scrolls on overflow) */}
         <nav className="absolute left-1/2 top-0 z-20 max-w-[94vw] -translate-x-1/2">
-          <ul className="no-scrollbar flex items-center gap-3 overflow-x-auto rounded-b-2xl bg-black px-4 py-2 sm:gap-5 md:gap-7 md:rounded-b-3xl md:px-8">
+          <ul className="no-scrollbar flex items-center gap-3 overflow-x-auto rounded-b-2xl bg-black px-4 py-2 sm:gap-6 md:gap-10 md:rounded-b-3xl md:px-8">
             {NAV_ITEMS.map((item) => (
               <li key={item.label}>
                 <a
