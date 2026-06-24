@@ -8,6 +8,14 @@ import triagePrompt from '../prompts/triage.md?raw'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
+// A numbered action within a step: a short label plus one or more copiable
+// prompts to paste into the assistant in sequence.
+interface Action {
+  label?: string
+  note?: string
+  prompts: string[]
+}
+
 interface Step {
   n: string
   id: string
@@ -15,6 +23,7 @@ interface Step {
   tagline: string
   body?: string
   bullets?: string[]
+  actions?: Action[]
   promptTitle?: string
   prompt?: string
 }
@@ -59,9 +68,23 @@ const STEPS: Step[] = [
     title: 'Go Wide, Go Deep',
     tagline:
       "Don't settle for quick answers. Find the best approach of many to learn by comparison.",
-    bullets: [
-      "Expand the search space — repeat steps 3 + 4 until you have 30 ranked approaches. You'll notice the ranking shift each pass.",
-      'Expand the leading 5 — run Phase 2 scoping (50 lines each) on the top 5 approaches, then repeat for phases 3 & 4.',
+    actions: [
+      {
+        label:
+          "Expand the search space — repeat steps 3 + 4 until you have ~30 ranked approaches. You'll notice the ranking shift each pass.",
+        prompts: [
+          'repeat the scoping prompt for 200 more lines of new approaches',
+          'repeat the triaging prompt extending the table to include all approaches so far',
+        ],
+      },
+      {
+        label:
+          'Expand the leading 5 — run Phase 2 scoping (50 lines each) on the top 5 approaches, then repeat for phases 3 & 4.',
+        prompts: [
+          'according to the scoping prompt run Phase 2 scoping on each of the top 5 approaches 50 lines each',
+          'have you obeyed the strict definitions for phases 2,3,4 scoping?',
+        ],
+      },
     ],
   },
   {
@@ -69,10 +92,29 @@ const STEPS: Step[] = [
     id: 'step-6',
     title: 'Convert to Spec',
     tagline: 'How does this become real?',
-    bullets: [
-      'Should any of the leading approaches be combined?',
-      'What are the requirements (step 2 again) to turn them into working technologies?',
-      'What are the key requirements to hit in 6 months of R&D?',
+    actions: [
+      {
+        label: 'Re-rank the leading approaches, then test whether any should be combined.',
+        prompts: [
+          'repeat the triaging prompt for these 5 approaches',
+          'should any of these approaches be combined for an even better outcome?',
+        ],
+      },
+      {
+        label:
+          'Define what must be true for an approach to become working technology.',
+        note: 'When combining approaches, consider asking this for each approach in sequence.',
+        prompts: [
+          'using the requirements prompt set up what needs to be true for this approach to become working technology',
+        ],
+      },
+      {
+        label:
+          "Separate what's already proven from what a first prototype must prove.",
+        prompts: [
+          'For this approach show what is already proven and what needs to be proven in a first prototype, assume that some engineering steps are more important to prove than others (if all cannot be simultaneously proven in a 6 month R&D timeframe) to convince venture capital investors to fund a startup building each approach into working technology',
+        ],
+      },
     ],
   },
   {
@@ -80,13 +122,64 @@ const STEPS: Step[] = [
     id: 'step-7',
     title: 'Find Collaborators',
     tagline: 'Who do you need to build with?',
-    bullets: [
-      'Make an experimental plan based on key near-term requirements.',
-      'List 40–100 labs working in this space to run the killer experiments with — expect a ~1% response rate from cold email.',
-      'Email them all; read their papers before the first meeting. In it: test whether they’d sign a letter of support / NDA (have templates ready — it tests intent and helps later fundraising), and pressure-test your experimental plan.',
+    actions: [
+      {
+        label: 'Build an experimental plan for each 6-month prototype milestone.',
+        prompts: [
+          'For this approach, create a detailed experimental plan for each 6-month prototype milestone that I can execute in an academic or corporate research lab',
+        ],
+      },
+      {
+        label:
+          'Find the labs to run the killer experiments with — expect a ~1% response rate from cold email.',
+        prompts: [
+          'generate a table for this approach, of 40 academic research labs working on this who I can collaborate with. Columns should have their name, email address, university affiliation, top 2 related papers',
+        ],
+      },
+      {
+        label:
+          'Draft a personalised cold-outreach email to send to every lab on the list.',
+        prompts: [
+          "create a short template email for cold outreach that I can personalise to each lab, the PI's name, that I am reaching out because I read their paper on [named paper], that I've built an experimental plan that could lead to [approach outcome] and that I'd like to come for [X] weeks to execute it with their supervision or consider writing a grant together. Show the swap-outs in green. Ask for a 15 mins intro call. Do not say I'm attaching the experimental plan",
+        ],
+      },
     ],
   },
 ]
+
+// A single short prompt rendered as a click-to-copy box.
+function CopyablePrompt({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false)
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      // Clipboard API unavailable — silently ignore.
+    }
+  }
+
+  return (
+    <button
+      onClick={copy}
+      className="group flex w-full items-start gap-3 rounded-xl border border-white/10 bg-[#0b0b0b] p-3 text-left transition-colors hover:border-primary/40 sm:p-4"
+    >
+      <span className="flex-1 text-xs leading-relaxed text-gray-300 sm:text-sm">
+        {text}
+      </span>
+      <span className="text-primary mt-0.5 flex flex-shrink-0 items-center gap-1 text-[10px] font-medium uppercase tracking-wide sm:text-xs">
+        {copied ? (
+          <Check className="h-3.5 w-3.5" />
+        ) : (
+          <Copy className="h-3.5 w-3.5" />
+        )}
+        {copied ? 'Copied' : 'Copy'}
+      </span>
+    </button>
+  )
+}
 
 function StepRow({
   step,
@@ -167,6 +260,35 @@ function StepRow({
                     </li>
                   ))}
                 </ul>
+              )}
+
+              {step.actions && (
+                <ol className="flex flex-col gap-6">
+                  {step.actions.map((action, ai) => (
+                    <li key={ai} className="flex gap-3 sm:gap-4">
+                      <span className="text-primary flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border border-primary/40 text-xs font-bold tabular-nums">
+                        {ai + 1}
+                      </span>
+                      <div className="flex flex-1 flex-col gap-2">
+                        {action.label && (
+                          <p className="text-sm text-gray-300 sm:text-base">
+                            {action.label}
+                          </p>
+                        )}
+                        {action.note && (
+                          <p className="text-xs italic text-gray-500 sm:text-sm">
+                            {action.note}
+                          </p>
+                        )}
+                        <div className="mt-1 flex flex-col gap-2">
+                          {action.prompts.map((p, pi) => (
+                            <CopyablePrompt key={pi} text={p} />
+                          ))}
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
               )}
 
               {step.prompt && (
