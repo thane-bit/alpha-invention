@@ -24,7 +24,7 @@ export default function About() {
       <div className="mx-auto flex max-w-6xl flex-col items-center rounded-2xl bg-[#101010] px-6 py-20 text-center sm:px-12 md:rounded-[2rem] md:py-28">
         {/* Small label */}
         <span className="text-primary mb-8 text-[10px] uppercase tracking-[0.3em] sm:text-xs">
-          Set an Outcome, Copy these Prompts
+          Set an Outcome, Copy the Prompts
         </span>
 
         {/* Multi-style heading */}

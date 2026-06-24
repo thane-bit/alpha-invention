@@ -227,17 +227,30 @@ export default function Protocol() {
   return (
     <section id="protocol" className="bg-black px-4 py-24 sm:px-6 md:py-32">
       <div className="mx-auto max-w-4xl">
-        <div ref={headerRef} className="mb-12 flex justify-center text-center">
+        <div
+          ref={headerRef}
+          className="mb-12 flex flex-col items-center text-center"
+        >
           <WordsPullUpMultiStyle
             className="text-2xl font-normal sm:text-3xl md:text-4xl lg:text-5xl"
             segments={[
-              { text: 'The Protocol.', className: '' },
+              { text: 'The Alpha Method.', className: '' },
               {
                 text: 'Seven steps from outcome to collaborators.',
                 className: 'text-gray-500',
               },
             ]}
           />
+          <p className="mx-auto mt-8 max-w-2xl text-sm leading-relaxed text-gray-400 sm:text-base">
+            The Scoping Protocol works because researchers spend 4 months
+            manually validating each assumption, meeting experts from industry,
+            academia and investors. The Alpha Method is AI-accelerated so that
+            you have an invention worth months of research and prototyping. The
+            Scoping Protocol can move in any direction, branching from any
+            approach. The Alpha Method forces you to start broad and move through
+            a fixed number of steps. Begin with Alpha, develop your own style,
+            become a Scoping Protocol Expert.
+          </p>
         </div>
 
         <motion.div
