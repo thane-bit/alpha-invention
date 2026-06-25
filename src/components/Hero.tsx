@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
 import WordsPullUp from './WordsPullUp'
 import { GeminiIcon, ClaudeIcon, OpenAIIcon } from './BrandIcons'
-import { GEMINI_URL, CLAUDE_URL, OPENAI_URL } from '../links'
+import { GEMINI_URL, CLAUDE_URL, OPENAI_URL, DSV_HOME_URL } from '../links'
+import dsvMark from '../assets/dsv-mark.png'
 
 // Chat assistants surfaced as icon links inside the "Start scoping" pill.
 const SCOPING_TOOLS: {
@@ -14,15 +15,23 @@ const SCOPING_TOOLS: {
   { name: 'ChatGPT', href: OPENAI_URL, Icon: OpenAIIcon },
 ]
 
-// "About" scrolls to the first content section; "Invent" to the 7-step protocol.
+// "About" scrolls to the first content section; "Invent" to the 7-step
+// protocol; the DSV mark links out to the Deep Science Ventures homepage.
 const NAV_ITEMS: {
   n?: string
   label: string
   href: string
   external?: boolean
+  img?: string
 }[] = [
   { label: 'About', href: '#about' },
   { label: 'Invent', href: '#protocol' },
+  {
+    label: 'Deep Science Ventures',
+    href: DSV_HOME_URL,
+    external: true,
+    img: dsvMark,
+  },
 ]
 
 const EASE = [0.16, 1, 0.3, 1] as const
@@ -50,26 +59,43 @@ export default function Hero() {
           <ul className="no-scrollbar flex items-center gap-3 overflow-x-auto rounded-b-2xl bg-black px-4 py-2 sm:gap-6 md:gap-10 md:rounded-b-3xl md:px-8">
             {NAV_ITEMS.map((item) => (
               <li key={item.label}>
-                <a
-                  href={item.href}
-                  target={item.external ? '_blank' : undefined}
-                  rel={item.external ? 'noopener noreferrer' : undefined}
-                  className="flex items-baseline gap-1 whitespace-nowrap text-[10px] transition-colors duration-200 sm:text-xs md:text-sm"
-                  style={{ color: 'rgba(225, 224, 204, 0.8)' }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.color = '#E1E0CC')
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.color = 'rgba(225, 224, 204, 0.8)')
-                  }
-                >
-                  {item.n && (
-                    <span className="text-primary text-[0.7em] font-bold tabular-nums">
-                      {item.n}
-                    </span>
-                  )}
-                  {item.label}
-                </a>
+                {item.img ? (
+                  <a
+                    href={item.href}
+                    target={item.external ? '_blank' : undefined}
+                    rel={item.external ? 'noopener noreferrer' : undefined}
+                    aria-label={item.label}
+                    title={item.label}
+                    className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full ring-1 ring-white/20 transition-transform duration-200 hover:scale-110 sm:h-7 sm:w-7"
+                  >
+                    <img
+                      src={item.img}
+                      alt={item.label}
+                      className="h-full w-full object-cover"
+                    />
+                  </a>
+                ) : (
+                  <a
+                    href={item.href}
+                    target={item.external ? '_blank' : undefined}
+                    rel={item.external ? 'noopener noreferrer' : undefined}
+                    className="flex items-baseline gap-1 whitespace-nowrap text-[10px] transition-colors duration-200 sm:text-xs md:text-sm"
+                    style={{ color: 'rgba(225, 224, 204, 0.8)' }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.color = '#E1E0CC')
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.color = 'rgba(225, 224, 204, 0.8)')
+                    }
+                  >
+                    {item.n && (
+                      <span className="text-primary text-[0.7em] font-bold tabular-nums">
+                        {item.n}
+                      </span>
+                    )}
+                    {item.label}
+                  </a>
+                )}
               </li>
             ))}
           </ul>

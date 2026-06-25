@@ -13,12 +13,8 @@ export default function Bridge() {
           className="mx-auto w-full max-w-3xl text-2xl leading-snug sm:text-3xl md:text-4xl lg:text-5xl"
           segments={[
             {
-              text: 'But the Venture Science Doctorate cannot enrol everyone who applies —',
+              text: "it's never been more important to democratize tools for invention",
               className: 'font-normal',
-            },
-            {
-              text: "it's never been more important to democratize tools for invention.",
-              className: 'italic font-serif',
             },
           ]}
         />
