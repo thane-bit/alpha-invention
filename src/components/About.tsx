@@ -4,7 +4,7 @@ import WordsPullUpMultiStyle from './WordsPullUpMultiStyle'
 import AnimatedLetter from './AnimatedLetter'
 
 const BODY_TEXT =
-  "But the Venture Science Doctorate cannot enrol everyone who applies and it's never been more important to democratize tools for invention."
+  'Across hundreds of scoping runs, Alpha pairs adversarial agents that argue every claim, building a comprehensive blueprint of intervention pathways. Together they map the structural bottlenecks, rank approaches on upside, neglect and traction, and convert raw insight into a fundable product specification.'
 
 export default function About() {
   const paragraphRef = useRef<HTMLParagraphElement>(null)
