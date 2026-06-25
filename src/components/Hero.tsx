@@ -25,13 +25,13 @@ const NAV_ITEMS: {
   img?: string
 }[] = [
   { label: 'About', href: '#about' },
-  { label: 'Invent', href: '#protocol' },
   {
     label: 'Deep Science Ventures',
     href: DSV_HOME_URL,
     external: true,
     img: dsvMark,
   },
+  { label: 'Invent', href: '#protocol' },
 ]
 
 const EASE = [0.16, 1, 0.3, 1] as const
@@ -66,7 +66,7 @@ export default function Hero() {
                     rel={item.external ? 'noopener noreferrer' : undefined}
                     aria-label={item.label}
                     title={item.label}
-                    className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full ring-1 ring-white/20 transition-transform duration-200 hover:scale-110 sm:h-7 sm:w-7"
+                    className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full transition-transform duration-200 hover:scale-110 sm:h-11 sm:w-11"
                   >
                     <img
                       src={item.img}
