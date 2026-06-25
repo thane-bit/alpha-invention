@@ -13,7 +13,7 @@ const PHRASE_LINKS: { phrase: string; href: string }[] = [
 // Brief lineage: Deep Science Ventures first, then the Venture Science
 // Doctorate — the two foundations Alpha grew out of.
 const BODY_TEXT =
-  'Deep Science Ventures is a venture creator that pairs founder-type scientists with deep domain expertise to build high-impact companies across climate, computation, agriculture and pharma — reasoning backwards from the outcome the world needs. To date it has launched 58 companies, attracted $220M in funding and built a portfolio valued at $700M. The Venture Science Doctorate is its reinvention of the PhD: a three-year, fully-funded programme that trains Venture Scientists to design their own research from first principles and launch breakthrough deep-tech ventures, with 14 Venture Scientists currently in training. Alpha turns that same doctrine into an agentic workflow anyone can run.'
+  'Deep Science Ventures is a venture creator that pairs founder-type scientists with deep domain expertise to build high-impact companies across climate, computation, agriculture and pharma — reasoning backwards from the outcome the world needs. To date it has launched 58 companies, attracted $240M in funding and built a portfolio valued at $700M. The Venture Science Doctorate is its reinvention of the PhD: a three-year, fully-funded programme that trains Venture Scientists to design their own research from first principles and launch breakthrough deep-tech ventures, with 14 Venture Scientists currently in training. Alpha turns that same doctrine into an agentic workflow anyone can run.'
 
 export default function Origins() {
   const paragraphRef = useRef<HTMLParagraphElement>(null)
@@ -118,7 +118,8 @@ export default function Origins() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-primary underline underline-offset-2 transition-opacity hover:opacity-80"
+                    className="underline decoration-2 underline-offset-2 transition-opacity hover:opacity-80"
+                    style={{ color: '#FBFAF2' }}
                   >
                     {letters}
                     {nextSharesLink ? space : null}
