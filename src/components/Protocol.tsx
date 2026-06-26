@@ -403,8 +403,8 @@ export default function Protocol() {
           <p className="mx-auto mt-8 max-w-2xl text-sm leading-relaxed text-gray-400 sm:text-base">
             The Scoping Protocol works because researchers spend 4 months
             manually validating each assumption, meeting experts from industry,
-            academia and investors. The Alpha Method is AI-accelerated so that
-            you have an invention worth months of research and prototyping. The
+            academia and investors. The Alpha Method is AI-accelerated to
+            rapidly find an invention worth developing. The
             Scoping Protocol can move in any direction, branching from any
             approach. The Alpha Method forces you to start broad and move through
             a fixed number of steps. Let's begin with Alpha.
