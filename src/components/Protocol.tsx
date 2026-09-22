@@ -2,9 +2,11 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { Check, Copy, ChevronDown } from 'lucide-react'
 import WordsPullUpMultiStyle from './WordsPullUpMultiStyle'
+import outcomePrompt from '../prompts/outcome.md?raw'
 import requirementsPrompt from '../prompts/requirements.md?raw'
 import scoperPrompt from '../prompts/scoper.md?raw'
 import triagePrompt from '../prompts/triage.md?raw'
+import groundingPrompt from '../prompts/grounding.md?raw'
 import { PROTOCOL_URL } from '../links'
 
 const EASE = [0.22, 1, 0.36, 1] as const
@@ -17,6 +19,13 @@ interface Action {
   prompts: string[]
 }
 
+// A full system prompt shown in a scrollable box with a copy button.
+interface SystemPrompt {
+  title: string
+  note?: string
+  text: string
+}
+
 interface Step {
   n: string
   id: string
@@ -26,8 +35,7 @@ interface Step {
   body?: string
   bullets?: string[]
   actions?: Action[]
-  promptTitle?: string
-  prompt?: string
+  prompts?: SystemPrompt[]
 }
 
 const STEPS: Step[] = [
@@ -37,8 +45,8 @@ const STEPS: Step[] = [
     title: 'Choose Outcome',
     tagline: "What does the world look like once it's solved?",
     narrative:
-      'Everything starts from the world you want to exist — not the technology you want to build. Describe that end-state vividly; Alpha reasons backwards from it, so the sharper the outcome, the stronger everything downstream.',
-    body: 'Solve the global challenge you care about and the world looks like…',
+      'Everything starts from the world you want to exist — not the technology you want to build. But a vague outcome cannot be fixed downstream: every requirement, every constraint and every ranked approach inherits its sloppiness. This agent does the work of sharpening it. You bring a field you care about; it generates candidate end-states, finds the number that decides whether you won, tears the outcome down to the physics that limits it, and hands Step 02 a locked, falsifiable target.',
+    prompts: [{ title: 'System Prompt: Outcome 1.0.a', text: outcomePrompt }],
   },
   {
     n: '02',
@@ -47,8 +55,7 @@ const STEPS: Step[] = [
     tagline: 'What needs to be true to find solutions in this space?',
     narrative:
       "Before hunting for solutions, you map the rules of the game: the hard constraints any answer must satisfy — physics, economics, regulation, biology. These become the filter that keeps the search honest and rules out approaches that can't work.",
-    promptTitle: 'System Prompt: Requirements',
-    prompt: requirementsPrompt,
+    prompts: [{ title: 'System Prompt: Requirements', text: requirementsPrompt }],
   },
   {
     n: '03',
@@ -73,8 +80,14 @@ const STEPS: Step[] = [
         bottlenecks behind every path.
       </>
     ),
-    promptTitle: 'System Prompt: SCOPER 2.2.a',
-    prompt: scoperPrompt,
+    prompts: [
+      { title: 'System Prompt: SCOPER 2.3.a', text: scoperPrompt },
+      {
+        title: 'System Prompt: Evidence Grounding 1.0.a',
+        note: 'Run second, with web search on. Paste in the SCOPER output (or the Outcome or Requirements output): it verifies every citation, replaces invented ones, and fills #EVD-NEEDED gaps with real sources.',
+        text: groundingPrompt,
+      },
+    ],
   },
   {
     n: '04',
@@ -84,8 +97,9 @@ const STEPS: Step[] = [
       'Compared by Upside, Neglect and Traction — which approaches lead?',
     narrative:
       'With many approaches on the table, you score each on three axes: Upside (how big if it works), Neglect (how overlooked it is), and Traction (how provable in the near term). The ranking surfaces the few paths worth deeper investment.',
-    promptTitle: 'System Prompt: Venture-Science Triage Evaluator',
-    prompt: triagePrompt,
+    prompts: [
+      { title: 'System Prompt: Venture-Science Triage Evaluator', text: triagePrompt },
+    ],
   },
   {
     n: '05',
@@ -212,6 +226,58 @@ function CopyablePrompt({ text }: { text: string }) {
   )
 }
 
+// A full system prompt with its own copy button and scrollable body.
+function SystemPromptBox({ prompt }: { prompt: SystemPrompt }) {
+  const [copied, setCopied] = useState(false)
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(prompt.text)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      // Clipboard API unavailable — silently ignore.
+    }
+  }
+
+  return (
+    <div className="rounded-xl border border-white/10 bg-[#0b0b0b] p-4 sm:p-5">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h4
+          className="text-sm font-bold sm:text-base"
+          style={{ color: '#E1E0CC' }}
+        >
+          {prompt.title}
+        </h4>
+        <button
+          onClick={copy}
+          className="flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-medium text-black transition-transform duration-200 hover:scale-[1.03] sm:text-sm"
+        >
+          {copied ? (
+            <>
+              <Check className="h-3.5 w-3.5" />
+              Copied
+            </>
+          ) : (
+            <>
+              <Copy className="h-3.5 w-3.5" />
+              Copy prompt
+            </>
+          )}
+        </button>
+      </div>
+      {prompt.note && (
+        <p className="mt-3 text-xs italic leading-relaxed text-gray-500 sm:text-sm">
+          {prompt.note}
+        </p>
+      )}
+      <pre className="mt-4 max-h-[55vh] overflow-auto whitespace-pre rounded-lg bg-black/60 p-4 font-mono text-[11px] leading-relaxed text-gray-300 sm:text-xs">
+        {prompt.text}
+      </pre>
+    </div>
+  )
+}
+
 function StepRow({
   step,
   isOpen,
@@ -221,18 +287,6 @@ function StepRow({
   isOpen: boolean
   onToggle: () => void
 }) {
-  const [copied, setCopied] = useState(false)
-
-  const copyPrompt = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch {
-      // Clipboard API unavailable — silently ignore.
-    }
-  }
-
   return (
     <div
       id={step.id}
@@ -328,37 +382,9 @@ function StepRow({
                 </ol>
               )}
 
-              {step.prompt && (
-                <div className="rounded-xl border border-white/10 bg-[#0b0b0b] p-4 sm:p-5">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <h4
-                      className="text-sm font-bold sm:text-base"
-                      style={{ color: '#E1E0CC' }}
-                    >
-                      {step.promptTitle}
-                    </h4>
-                    <button
-                      onClick={() => copyPrompt(step.prompt as string)}
-                      className="flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-medium text-black transition-transform duration-200 hover:scale-[1.03] sm:text-sm"
-                    >
-                      {copied ? (
-                        <>
-                          <Check className="h-3.5 w-3.5" />
-                          Copied
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="h-3.5 w-3.5" />
-                          Copy prompt
-                        </>
-                      )}
-                    </button>
-                  </div>
-                  <pre className="mt-4 max-h-[55vh] overflow-auto whitespace-pre rounded-lg bg-black/60 p-4 font-mono text-[11px] leading-relaxed text-gray-300 sm:text-xs">
-                    {step.prompt}
-                  </pre>
-                </div>
-              )}
+              {step.prompts?.map((p) => (
+                <SystemPromptBox key={p.title} prompt={p} />
+              ))}
             </div>
           </motion.div>
         )}
