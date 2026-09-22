@@ -94,11 +94,11 @@ const STEPS: Step[] = [
     id: 'step-4',
     title: 'Rank Approaches',
     tagline:
-      'Compared by Upside, Neglect and Traction — which approaches lead?',
+      'Explore first, exploit later. Which approaches lead?',
     narrative:
-      'With many approaches on the table, you score each on three axes: Upside (how big if it works), Neglect (how overlooked it is), and Traction (how provable in the near term). The ranking surfaces the few paths worth deeper investment.',
+      'With many approaches on the table, you rank them in Explore mode: Necessity (is it on the causal path), Sufficiency (would it deliver the outcome if it worked), Upside and Neglect. Tractability and completeness are deliberately ignored here, because judging feasibility too early penalises exactly the novel ideas you are looking for. They come back in Exploit mode at Step 06.',
     prompts: [
-      { title: 'System Prompt: Venture-Science Triage Evaluator', text: triagePrompt },
+      { title: 'System Prompt: Venture-Science Triage Evaluator 2.0.a', text: triagePrompt },
     ],
   },
   {
@@ -115,7 +115,7 @@ const STEPS: Step[] = [
           "Expand the search space — repeat steps 3 + 4 until you have ~30 ranked approaches. You'll notice the ranking shift each pass.",
         prompts: [
           'repeat the scoping prompt for 200 more lines of new approaches',
-          'repeat the triaging prompt extending the table to include all approaches so far',
+          'repeat the triaging prompt in EXPLORE mode extending the table to include all approaches so far',
         ],
       },
       {
@@ -139,7 +139,7 @@ const STEPS: Step[] = [
       {
         label: 'Re-rank the leading approaches, then test whether any should be combined.',
         prompts: [
-          'repeat the triaging prompt for these 5 approaches',
+          'repeat the triaging prompt in EXPLOIT mode for these 5 approaches',
           'should any of these approaches be combined for an even better outcome?',
         ],
       },

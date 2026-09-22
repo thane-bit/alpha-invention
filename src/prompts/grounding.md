@@ -68,4 +68,4 @@ Your response contains exactly three blocks and nothing else.
 
 **Block C - the evidence summary.**
 *   Counts per verdict: VERIFIED / CORRECTED / UPGRADED / MEASURED / WEAK / CONTRADICTED / FABRICATED / STILL-NEEDED / EST-KEPT.
-*   **Load-bearing gaps** - the 3-5 `STILL-NEEDED` or `CONTRADICTED` lines that sit highest in the tree (on or directly under an `#Upstream` node or a Master Regulator). These are the claims a first experiment should test, and they lower the Traction score in Step 04.
+*   **Load-bearing gaps** - the 3-5 `STILL-NEEDED` or `CONTRADICTED` lines that sit highest in the tree (on or directly under an `#Upstream` node or a Master Regulator). These are the claims a first experiment should test. They feed Tractability and Completeness in EXPLOIT mode (Step 06) and must never lower a score in EXPLORE mode.
